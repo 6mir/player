@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="fa-IR" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>موزیک پلیرآنلاین</title>
+    <meta name="theme-color" content="rgb(31 41 55)">
+    <link rel="icon" href="./src/img/error-img.png" type="image/png" />
+    <link rel="stylesheet" href="src/style/app.css">
+    <script src="./src/js/app.js" defer></script>
+</head>
+
+<body class="font-RegularFt bg-gray-800 text-gray-200 mt-10 mb-32">
+
+    <svg class="hidden">
+        <symbol id="playIcon" fill="currentColor" viewBox="0 0 16 16">
+            <path
+                d="M11.596 8.697l-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 010 1.393" />
+        </symbol>
+
+        <symbol id="pauseIcon" fill="currentColor" viewBox="0 0 16 16">
+            <path
+                d="M5.5 3.5A1.5 1.5 0 017 5v6a1.5 1.5 0 01-3 0V5a1.5 1.5 0 011.5-1.5m5 0A1.5 1.5 0 0112 5v6a1.5 1.5 0 01-3 0V5a1.5 1.5 0 011.5-1.5" />
+        </symbol>
+
+        <symbol id="downloadIcon" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+        </symbol>
+
+        <symbol id="nextIcon" viewBox="0 0 24 24" fill="currentColor">
+            <path
+                d="M5.055 7.06C3.805 6.347 2.25 7.25 2.25 8.69v8.122c0 1.44 1.555 2.343 2.805 1.628L12 14.471v2.34c0 1.44 1.555 2.343 2.805 1.628l7.108-4.061c1.26-.72 1.26-2.536 0-3.256l-7.108-4.061C13.555 6.346 12 7.249 12 8.689v2.34L5.055 7.061Z" />
+        </symbol>
+
+        <symbol id="prevIcon" viewBox="0 0 24 24" fill="currentColor">
+            <path
+                d="M9.195 18.44c1.25.714 2.805-.189 2.805-1.629v-2.34l6.945 3.968c1.25.715 2.805-.188 2.805-1.628V8.69c0-1.44-1.555-2.343-2.805-1.628L12 11.029v-2.34c0-1.44-1.555-2.343-2.805-1.628l-7.108 4.061c-1.26.72-1.26 2.536 0 3.256l7.108 4.061Z" />
+        </symbol>
+        <symbol id="loaderimg" fill="currentColor" viewBox="0 0 20 18">
+            <path
+                d="M18 0H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm-5.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm4.376 10.481A1 1 0 0 1 16 15H4a1 1 0 0 1-.895-1.447l3.5-7A1 1 0 0 1 7.468 6a.965.965 0 0 1 .9.5l2.775 4.757 1.546-1.887a1 1 0 0 1 1.618.1l2.541 4a1 1 0 0 1 .028 1.011Z" />
+        </symbol>
+        <symbol id="forwardIcon" viewBox="0 0 103.35 123.06">
+            <path
+                d="M60.22,113.81a4.54,4.54,0,0,1,0,9.07A60.23,60.23,0,1,1,89.71,10.16l-1.26-3.3a5.06,5.06,0,1,1,9.31-4c0,.12.1.24.14.36l5,13.15a4.87,4.87,0,0,1,.32,1.55,5,5,0,0,1-3.51,5.64L86.27,27.72a5,5,0,0,1-2.92-9.65l1.28-.39a50.59,50.59,0,0,0-10.19-4.19A51.17,51.17,0,1,0,60.22,113.81Zm14.4-7.71q-5,0-11.14-.58T51.62,104.3v-14H75.44a6,6,0,0,0,3.88-1,3.73,3.73,0,0,0,1.26-2.25A19.3,19.3,0,0,0,80.76,85V82.18a6.19,6.19,0,0,0-.86-3.52,3.77,3.77,0,0,0-3.31-1.27H72.65a4.8,4.8,0,0,0-3.14.82,3.53,3.53,0,0,0-1.13,2.36H51.81l1.89-42H95.45V54.22H68.68l-.45,10.19a7.86,7.86,0,0,1,3.69-1.48,29.29,29.29,0,0,1,4.29-.32h6.84a15.6,15.6,0,0,1,8.59,2.14,13.2,13.2,0,0,1,5,5.86,20.59,20.59,0,0,1,1.63,8.3v9.83a17.78,17.78,0,0,1-2.57,10,14.54,14.54,0,0,1-7.81,5.58,42.23,42.23,0,0,1-13.26,1.76Z"
+                transform="translate(0.06 0.18)" fill="currentColor" />
+        </symbol>
+        <symbol id="backwardIcon" viewBox="0 0 103.35 123.06">
+            <path
+                d="M74.27,111.79A51.17,51.17,0,0,0,45.8,13.49a50.59,50.59,0,0,0-10.19,4.19l1.28.39A5,5,0,0,1,34,27.72L20.53,23.6A5,5,0,0,1,17,18a4.87,4.87,0,0,1,.32-1.55l5-13.15c0-.12.08-.24.13-.36a5.06,5.06,0,1,1,9.32,4l-1.26,3.3A60.23,60.23,0,1,1,60,122.88a4.54,4.54,0,0,1,0-9.07A51.32,51.32,0,0,0,74.27,111.79ZM43.62,106.1q-5,0-11.14-.58T20.62,104.3v-14H44.44a6,6,0,0,0,3.88-1,3.73,3.73,0,0,0,1.26-2.25A19.3,19.3,0,0,0,49.76,85V82.18a6.19,6.19,0,0,0-.86-3.52,3.77,3.77,0,0,0-3.31-1.27H41.65a4.8,4.8,0,0,0-3.14.82,3.53,3.53,0,0,0-1.13,2.36H20.81l1.89-42H64.45V54.22H37.68l-.45,10.19a7.86,7.86,0,0,1,3.69-1.48,29.29,29.29,0,0,1,4.29-.32h6.84a15.6,15.6,0,0,1,8.59,2.14,13.2,13.2,0,0,1,5,5.86,20.59,20.59,0,0,1,1.63,8.3v9.83a17.78,17.78,0,0,1-2.57,10,14.54,14.54,0,0,1-7.81,5.58,42.23,42.23,0,0,1-13.26,1.76Z"
+                transform="translate(-16.94 0.18)" fill="currentColor" />
+        </symbol>
+        <symbol id="loopIcon" viewBox="0 0 512 443.73">
+            <path
+                d="M392.53,34.13H119.47A119.6,119.6,0,0,0,0,153.6V307.2A119.6,119.6,0,0,0,119.47,426.67H179.2a34.14,34.14,0,0,0,0-68.27H128a59.8,59.8,0,0,1-59.73-59.73V162.13A59.8,59.8,0,0,1,128,102.4H384a59.8,59.8,0,0,1,59.73,59.73V298.67A59.8,59.8,0,0,1,384,358.4H366.93V315.73a8.53,8.53,0,0,0-13.65-6.82l-102.4,76.8a8.54,8.54,0,0,0,0,13.65l102.4,76.8a8.53,8.53,0,0,0,13.65-6.83V426.67h25.6A119.6,119.6,0,0,0,512,307.2V153.6A119.6,119.6,0,0,0,392.53,34.13Z"
+                transform="translate(0 -34.13)" fill="currentColor" />
+        </symbol>
+
+        <symbol id="volumeOnIcon" fill="currentColor">
+            <defs>
+                <symbol id="plyr-volume" viewBox="0 0 18 18">
+                    <path
+                        d="M15.6 3.3c-.4-.4-1-.4-1.4 0-.4.4-.4 1 0 1.4C15.4 5.9 16 7.4 16 9c0 1.6-.6 3.1-1.8 4.3-.4.4-.4 1 0 1.4.2.2.5.3.7.3.3 0 .5-.1.7-.3C17.1 13.2 18 11.2 18 9s-.9-4.2-2.4-5.7z" />
+                    <path
+                        d="M11.282 5.282a.909.909 0 000 1.316c.735.735.995 1.458.995 2.402 0 .936-.425 1.917-.995 2.487a.909.909 0 000 1.316c.145.145.636.262 1.018.156a.725.725 0 00.298-.156C13.773 11.733 14.13 10.16 14.13 9c0-.17-.002-.34-.011-.51-.053-.992-.319-2.005-1.522-3.208a.909.909 0 00-1.316 0zm-7.496.726H.714C.286 6.008 0 6.31 0 6.76v4.512c0 .452.286.752.714.752h3.072l4.071 3.858c.5.3 1.143 0 1.143-.602V2.752c0-.601-.643-.977-1.143-.601L3.786 6.008z" />
+                </symbol>
+            </defs>
+            <use xlink:href="#plyr-volume" />
+        </symbol>
+
+        <symbol id="volumeOffIcon" fill="currentColor">
+            <defs>
+                <symbol id="plyr-muted" viewBox="0 0 18 18">
+                    <path
+                        d="M12.4 12.5l2.1-2.1 2.1 2.1 1.4-1.4L15.9 9 18 6.9l-1.4-1.4-2.1 2.1-2.1-2.1L11 6.9 13.1 9 11 11.1zM3.786 6.008H.714C.286 6.008 0 6.31 0 6.76v4.512c0 .452.286.752.714.752h3.072l4.071 3.858c.5.3 1.143 0 1.143-.602V2.752c0-.601-.643-.977-1.143-.601L3.786 6.008z" />
+                </symbol>
+            </defs>
+            <use xlink:href="#plyr-muted" />
+        </symbol>
+    </svg>
+
+    <boxMusic class="w-11/12 md:w-9/12 mx-auto flex flex-col items-center gap-y-3 md:gap-y-5"></boxMusic>
+
+
+    <player
+        class="w-[95%] md:w-10/12 mx-auto flex items-center justify-between gap-x-2 fixed left-0 right-0 duration-300 bg-gray-600/40 backdrop-blur-3xl rounded-xl px-2 py-1.5"
+        style="bottom: -999px;">
+
+        <audio class="hidden"></audio>
+
+        <!-- img -->
+        <div class="min-w-12 min-h-12 size-12 md:min-w-20 md:min-h-20 md:size-20 rounded-full">
+            <imgLoader class="bg-gray-500 size-full block rounded-full animate-pulse"></imgLoader>
+            <img class="size-full" style="display: none;">
+        </div>
+
+        <!-- contorol audio -->
+        <div class="w-full flex flex-col gap-y-1 md:gap-y-1.5">
+
+            <!-- name dl loop -->
+            <div class="w-full flex items-center justify-between">
+
+                <p id="name" class="font-BoldFt text-sm md:text-base"></p>
+
+                <div class="flex items-center justify-center gap-x-1 md:gap-x-2">
+                    <button onclick="loopPlaye(this)" class="animateScale size-[1.1rem] md:size-5"
+                        style="color: #999999;">
+                        <svg>
+                            <use href="#loopIcon">
+                        </svg>
+                    </button>
+
+                    <a id="downlod" class="animateScale size-5 md:size-6">
+                        <svg>
+                            <use href="#downloadIcon">
+                        </svg>
+                    </a>
+                </div>
+
+            </div>
+
+            <!-- time progeres -->
+            <div class="w-full flex items-center justify-center gap-x-2">
+
+                <!-- progres -->
+                <mainProgresTime class="w-full h-2 md:h-3 flex items-center cursor-pointer">
+                    <div class="w-full h-1 md:h-1.5 flex items-center bg-gray-600 rounded-xl -scale-x-100">
+                        <progresTime
+                            class="w-0 h-full bg-gray-400 rounded-xl flex items-center justify-end pr-1 md:pr-2 after:size-1 after:bg-gray-300 after:scale-[2.5] md:after:scale-[3.5] after:rounded-full after:absolute after:z-10">
+                        </progresTime>
+                    </div>
+                </mainProgresTime>
+
+                <div class="w-32 text-sm md:text-base text-gray-400">
+                    <audioLoader>درحال لود</audioLoader>
+                    <time style="display: none;"></time>
+                </div>
+            </div>
+
+            <!-- 1(play pause next prev forward backward) 2(volum)  -->
+            <div class="w-full flex items-center justify-between">
+                <i class="opacity-0"></i>
+
+                <!-- (1) -->
+                <div class="flex items-center justify-center gap-x-2 md:gap-x-4">
+
+                    <button onclick="movePlaye(1)" class="animateScale size-5 md:size-6">
+                        <svg>
+                            <use href="#forwardIcon">
+                        </svg>
+                    </button>
+
+                    <button onclick="nextPlayer()" class="animateScale size-6 md:size-8">
+                        <svg>
+                            <use href="#nextIcon">
+                        </svg>
+                    </button>
+
+                    <button id="play" class="animateScale size-7 md:size-8">
+                        <svg>
+                            <use href="#playIcon">
+                        </svg>
+                    </button>
+
+                    <button onclick="prevPlayer()" class="animateScale size-6 md:size-8">
+                        <svg>
+                            <use href="#prevIcon">
+                        </svg>
+                    </button>
+
+                    <button onclick="movePlaye(-1)" class="animateScale size-5 md:size-6">
+                        <svg>
+                            <use href="#backwardIcon">
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- (2) -->
+                <div class="flex items-center gap-x-1">
+
+                    <mainProgresVolume class="w-12 md:w-20 h-1.5 md:h-2.5 flex items-center cursor-pointer">
+                        <div class="w-full h-[0.2rem] md:h-1 flex items-center bg-gray-600 rounded-xl -scale-x-100">
+                            <progresVolume
+                                class="w-0 h-full bg-gray-400 rounded-xl flex items-center justify-end pr-1 md:pr-2 after:size-1 after:bg-gray-300 after:scale-[2] md:after:scale-[3] after:rounded-full after:absolute after:z-50">
+                            </progresVolume>
+                        </div>
+                    </mainProgresVolume>
+
+                    <svg id="volumeIcon" class="size-4 md:size-5">
+                        <use href="#volumeOnIcon">
+                    </svg>
+                </div>
+            </div>
+
+        </div>
+
+    </player>
+
+</body>
+
+</html>
