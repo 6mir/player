@@ -102,7 +102,10 @@
             <!-- name dl loop -->
             <div class="w-full flex items-center justify-between">
 
-                <p id="name" class="font-BoldFt text-base md:ext-lg"></p>
+                <div class="flex items-center gap-x-2">
+                    <p id="name" class="font-BoldFt text-base md:ext-lg"></p>
+                    <audioLoader class="text-sm md:text-base text-gray-400">درحال لود</audioLoader>
+                </div>
 
                 <div class="flex items-center justify-center gap-x-1 md:gap-x-2">
                     <button onclick="loopPlaye(this)" class="animateScale size-[1.1rem] md:size-5"
@@ -112,7 +115,7 @@
                         </svg>
                     </button>
 
-                    <a id="downlod" class="animateScale size-5 md:size-6">
+                    <a id="downlod" onclick="vibre(50)" class="animateScale size-5 md:size-6">
                         <svg>
                             <use href="#downloadIcon">
                         </svg>
@@ -134,8 +137,7 @@
                 </mainProgresTime>
 
                 <div class="w-32 text-sm md:text-base text-gray-400">
-                    <audioLoader>درحال لود</audioLoader>
-                    <time style="display: none;"></time>
+                    <time></time>
                 </div>
             </div>
 

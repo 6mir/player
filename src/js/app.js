@@ -64,7 +64,7 @@ dataMusics.forEach((dataMusic) => {
                     <use href="#playIcon">
                 </svg>
             </button>
-            <a download="${dataMusic.name}" href="${dataMusic.audio}" class="animateScale size-[1.3rem] md:size-6">
+            <a download="${dataMusic.name}" href="${dataMusic.audio}" onclick="vibre(50)" class="animateScale size-[1.3rem] md:size-6">
                 <svg>
                     <use href="#downloadIcon">
                 </svg>
@@ -152,7 +152,7 @@ function playMusic(getIdMusic) {
             rotateNum = 0;
             rotateImg(false);
             rotateImg(true);
-            vibra(60);
+            vibre(60);
             audioPlayer.src = dataMusic.audio;
 
             audioPlayer.oncanplay = () => {
@@ -175,12 +175,12 @@ function playMusic(getIdMusic) {
 
                 const divErrorElem = document.createElement("div");
                 divErrorElem.className =
-                    "fixed inset-0 max-w-max h-9 md:h-11 px-2 text-lg md:text-xl flex items-center justify-center bg-gray-700/60 backdrop-blur-lg m-4 rounded-md";
+                    "fixed inset-0 max-w-max h-9 md:h-11 px-2 text-base md:text-lg flex items-center justify-center bg-gray-700/60 backdrop-blur-lg m-4 rounded-md";
                 divErrorElem.innerHTML = `
                     <p class="text-red-400 ml-2">خطا در بارگذاری<p class="text-gray-300">${dataMusic.name}</p></p>
                 `;
                 document.body.appendChild(divErrorElem);
-                vibra([50, 40, 60, 40, 70, 300, 300])
+                vibre([40, 50, 40, 50, 80, 400, 200])
 
                 setTimeout(() => {
                     document.body.removeChild(divErrorElem);
@@ -192,7 +192,7 @@ function playMusic(getIdMusic) {
 
 // pause audio
 function pauseMusic() {
-    vibra(80)
+    vibre(70)
     player.style.bottom = "-999px"
     isMusicPlay = false
     rotateImg(false)
@@ -206,7 +206,7 @@ function pauseMusic() {
 
 // btn nex and prev player
 btnPlayer.addEventListener("click", function () {
-    vibra(40)
+    vibre(60)
 
     if (isMusicPlay) {
         btnPlayer.querySelector("svg>use").setAttribute("href", "#playIcon")
@@ -279,7 +279,7 @@ audioPlayer.addEventListener('ended', () => {
 
 // lopp audio
 function loopPlaye(eleman) {
-    vibra(50)
+    vibre(50)
     if (audioPlayer.loop == true) {
         audioPlayer.loop = false
         eleman.style.color = "#999999"
@@ -291,7 +291,7 @@ function loopPlaye(eleman) {
 
 // move audio
 function movePlaye(n) {
-    vibra(30)
+    vibre(20)
     audioPlayer.currentTime += (5 * n)
     if (audioPlayer.paused) {
         btnPlayer.click()
@@ -299,7 +299,7 @@ function movePlaye(n) {
 }
 
 // vibre
-function vibra(n) {
+function vibre(n) {
     navigator.vibrate(n);
 };
 
@@ -307,33 +307,12 @@ function vibra(n) {
 
 // loader audio a player
 audioPlayer.addEventListener("loadstart", () => {
-    showLoader();
+    loaderPlayer.style.display = "block";
 });
 
 audioPlayer.addEventListener("canplay", () => {
-    hideLoader();
-});
-
-audioPlayer.addEventListener("seeking", () => {
-    showLoader();
-});
-
-audioPlayer.addEventListener("seeked", () => {
-    hideLoader();
-});
-
-function showLoader() {
-    loaderPlayer.style.display = "block";
-    timePlayer.style.display = "none";
-}
-
-function hideLoader() {
     loaderPlayer.style.display = "none";
-    timePlayer.style.display = "block";
-}
-
-
-
+});
 
 // click a time audio is player
 let isDragging = false;
@@ -342,8 +321,6 @@ const progresParentElement = progresPlayer.closest("mainProgresTime");
 function updateProgress(e) {
     if (!isDragging) return;
     e.preventDefault();
-
-    vibra(20)
 
     let rect = progresParentElement.getBoundingClientRect();
     let clickX = (e.clientX || e.touches?.[0]?.clientX) - rect.left;
@@ -389,7 +366,6 @@ function handleDrag2(e) {
     if (!isDragging2) return;
 
     e.preventDefault();
-    vibra(20)
     let rect = progresParentElement2.getBoundingClientRect();
     let clickX = (e.clientX || e.touches[0].clientX) - rect.left;
 
