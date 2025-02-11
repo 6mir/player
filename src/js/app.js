@@ -1,9 +1,8 @@
-// "use strict"
-
 ["contextmenu", "keydown", "selectstart"].forEach((x) => {
     window.addEventListener(x, (e) => e.preventDefault())
 })
 
+// path data
 const BA = "./music/"
 const BI = "./src/img/"
 
@@ -16,40 +15,37 @@ let dataMusics = [
     { id: 6, name: "خلاص - شایع", audio: `${BA}ShayeKhales.mp3`, img: `${BI}shaye.jpg` },
     { id: 7, name: "حق - تتلو", audio: `${BA}TatalooHagh.mp3`, img: `${BI}tataloo.jpg` },
 ]
-const DEFALT_IMG = "./src/img/error-img.png"
+const DEFALT_IMG = `${BI}error-img.png`
 
 
+// select all item player
+
+// player
 const player = document.querySelector("player")
-
 function selectPlayer(idElemPlayer) {
     return player.querySelector(idElemPlayer)
 }
-
 const audioPlayer = selectPlayer("audio")
 const loaderPlayer = selectPlayer("audioLoader")
-
 const imgPlayer = selectPlayer("img")
 const loadImgPlayer = selectPlayer("imgLoader")
-
 const namePlayer = selectPlayer("#name")
-
 const btnPlayer = selectPlayer("#play")
 const downlodPlayer = selectPlayer("#downlod")
-
 const timePlayer = selectPlayer("time")
 const progresPlayer = selectPlayer("progresTime")
-
 const progresVolumePlayer = selectPlayer("progresVolume")
 const volumeIconPlayer = selectPlayer("#volumeIcon")
 
+// box music items
 const boxAll = document.querySelector("boxMusic")
 
 
+// is music play or pause
 let isMusicPlay = false
 
-
+// creat item muisc
 let appendItemMusic = document.createDocumentFragment();
-
 dataMusics.forEach((dataMusic) => {
     const itemMusic = document.createElement('div')
     itemMusic.setAttribute("data-id", dataMusic.id)
@@ -91,15 +87,12 @@ dataMusics.forEach((dataMusic) => {
 
     appendItemMusic.appendChild(itemMusic);
 });
-
 boxAll.appendChild(appendItemMusic);
 const playItemMusics = boxAll.querySelectorAll(".playItemBtn")
 
 
-
-
+// get id music is play
 let targetMusic, getIdMusic
-
 boxAll.addEventListener("click", function (e) {
 
     targetMusic = e.target;
@@ -123,53 +116,51 @@ boxAll.addEventListener("click", function (e) {
     }
 })
 
-function updatePlayButton(id) {
-    playItemMusics.forEach(button => {
-        const parentDiv = button.closest("div[data-id]");
-        if (parentDiv.getAttribute("data-id") == id) {
-            button.querySelector("svg>use").setAttribute("href", "#pauseIcon")
-            button.setAttribute("data-action", "pause")
-        } else {
-            button.querySelector("svg>use").setAttribute("href", "#playIcon")
-            button.setAttribute("data-action", "play")
-        }
-    });
-}
-
-
+// play audio
 let isNexOrPrev
-
 function playMusic(getIdMusic) {
     dataMusics.forEach((dataMusic) => {
         if (dataMusic.id == getIdMusic) {
-            // اعمال تغییرات UI بلافاصله هنگام کلیک روی پلی
             targetMusic.querySelector("svg>use").setAttribute("href", "#pauseIcon");
             btnPlayer.querySelector("svg>use").setAttribute("href", "#pauseIcon");
             player.style.bottom = "2px";
-            updatePlayButton(getIdMusic);
+            playItemMusics.forEach(button => {
+                const parentDiv = button.closest("div[data-id]");
+                if (parentDiv.getAttribute("data-id") == getIdMusic) {
+                    button.querySelector("svg>use").setAttribute("href", "#pauseIcon")
+                    button.setAttribute("data-action", "pause")
+                } else {
+                    button.querySelector("svg>use").setAttribute("href", "#playIcon")
+                    button.setAttribute("data-action", "play")
+                }
+            });
             isMusicPlay = true;
             imgPlayer.src = dataMusic.img;
+            imgPlayer.addEventListener("load", function () {
+                imgPlayer.style.display = "block"
+                loadImgPlayer.style.display = "none"
+            })
+
+            imgPlayer.addEventListener("error", function () {
+                imgPlayer.src = DEFALT_IMG
+                loadImgPlayer.style.display = "none"
+            })
             namePlayer.innerHTML = dataMusic.name;
             downlodPlayer.href = dataMusic.audio;
             downlodPlayer.download = dataMusic.name;
             progresPlayer.style.width = "0";
             rotateNum = 0;
-            FloaderImgPlayer();
             rotateImg(false);
             rotateImg(true);
-            vibra();
-
-            // تنظیم آهنگ جدید
+            vibra(60);
             audioPlayer.src = dataMusic.audio;
 
-            // زمانی که فایل آماده پخش شد، پخش موسیقی انجام شود
             audioPlayer.oncanplay = () => {
                 audioPlayer.play();
             };
 
-            // اگر خطا رخ داد
             audioPlayer.onerror = () => {
-                // ریست کردن تغییرات اگر خطا رخ داد
+
                 targetMusic.querySelector("svg>use").setAttribute("href", "#playIcon");
                 btnPlayer.querySelector("svg>use").setAttribute("href", "#playIcon");
                 isMusicPlay = false;
@@ -184,12 +175,12 @@ function playMusic(getIdMusic) {
 
                 const divErrorElem = document.createElement("div");
                 divErrorElem.className =
-                    "fixed inset-0 w-40 md:w-52 h-8 md:h-10 flex items-center justify-center bg-gray-700/60 backdrop-blur-lg m-4 rounded-md";
+                    "fixed inset-0 max-w-max h-9 md:h-11 px-2 text-lg md:text-xl flex items-center justify-center bg-gray-700/60 backdrop-blur-lg m-4 rounded-md";
                 divErrorElem.innerHTML = `
-                    <p class="text-red-400 text-lg md:text-xl">خطا در بارگذاری</p>
+                    <p class="text-red-400 ml-2">خطا در بارگذاری<p class="text-gray-300">${dataMusic.name}</p></p>
                 `;
                 document.body.appendChild(divErrorElem);
-                navigator.vibrate([50, 40, 60, 40, 70, 300, 300]);
+                vibra([50, 40, 60, 40, 70, 300, 300])
 
                 setTimeout(() => {
                     document.body.removeChild(divErrorElem);
@@ -199,16 +190,13 @@ function playMusic(getIdMusic) {
     });
 }
 
-
-
+// pause audio
 function pauseMusic() {
-    vibra()
+    vibra(80)
     player.style.bottom = "-999px"
-    btnPlayer.querySelector("svg>use").setAttribute("href", "#playIcon")
-    namePlayer.innerHTML = ""
     isMusicPlay = false
-    audioPlayer.pause()
     rotateImg(false)
+    audioPlayer.pause()
 
     playItemMusics.forEach(boxAllbtn => {
         boxAllbtn.querySelector("svg>use").setAttribute("href", "#playIcon")
@@ -216,52 +204,25 @@ function pauseMusic() {
     });
 }
 
-
-function FloaderImgPlayer() {
-
-    imgPlayer.addEventListener("load", function () {
-        imgPlayer.style.display = "block"
-        loadImgPlayer.style.display = "none"
-    })
-
-    imgPlayer.addEventListener("error", function () {
-        imgPlayer.src = DEFALT_IMG
-        loadImgPlayer.style.display = "none"
-    })
-}
-
-
+// btn nex and prev player
 btnPlayer.addEventListener("click", function () {
-    vibra()
+    vibra(40)
+
     if (isMusicPlay) {
         btnPlayer.querySelector("svg>use").setAttribute("href", "#playIcon")
         audioPlayer.pause()
-        isMusicPlay = false
         rotateImg(false)
+        isMusicPlay = false
 
     } else {
         btnPlayer.querySelector("svg>use").setAttribute("href", "#pauseIcon")
         audioPlayer.play()
-        isMusicPlay = true
         rotateImg(true)
+        isMusicPlay = true
     }
 })
-function nextPlayer() {
-    getIdMusic = (getIdMusic % dataMusics.length) + 1;
-    playMusic(getIdMusic);
 
-    isNexOrPrev = "next";
-}
-function prevPlayer() {
-    if (1 >= getIdMusic) {
-        getIdMusic = dataMusics.length + 1
-    }
-    getIdMusic--
-    playMusic(getIdMusic)
-    isNexOrPrev = "prev";
-}
-
-
+// update a time audio
 let currentMin = 0, currentSec = 0, durationMin = 0, durationSec = 0;
 audioPlayer.addEventListener("timeupdate", function () {
     if (isNaN(audioPlayer.duration)) return;
@@ -276,26 +237,75 @@ audioPlayer.addEventListener("timeupdate", function () {
     progresPlayer.style.width = (audioPlayer.currentTime / audioPlayer.duration) * 100 + "%";
 });
 
+// next a audio
+function nextPlayer() {
+    getIdMusic = (getIdMusic % dataMusics.length) + 1;
+    playMusic(getIdMusic);
+
+    isNexOrPrev = "next";
+}
+
+// prev a audio
+function prevPlayer() {
+    if (1 >= getIdMusic) {
+        getIdMusic = dataMusics.length + 1
+    }
+    getIdMusic--
+    playMusic(getIdMusic)
+
+    isNexOrPrev = "prev";
+}
+
+// rotate a img player
 let rotateFucton, rotateNum = 0;
-function rotateImg(tF) {
-    if (tF) {
+function rotateImg(TorF) {
+    if (TorF) {
         rotateFucton = setInterval(() => {
             rotateNum = (rotateNum + 1) % 360;
             imgPlayer.style.transform = `rotate(${rotateNum}deg)`;
-        }, 20);
+        }, 40);
     }
     else {
         clearInterval(rotateFucton)
     }
 }
 
-
+// end a time audio
 audioPlayer.addEventListener('ended', () => {
     setTimeout(() => {
         nextPlayer()
     }, 2000);
 });
 
+// lopp audio
+function loopPlaye(eleman) {
+    vibra(50)
+    if (audioPlayer.loop == true) {
+        audioPlayer.loop = false
+        eleman.style.color = "#999999"
+    } else {
+        audioPlayer.loop = true
+        eleman.style.color = "#e5e7eb"
+    }
+}
+
+// move audio
+function movePlaye(n) {
+    vibra(30)
+    audioPlayer.currentTime += (5 * n)
+    if (audioPlayer.paused) {
+        btnPlayer.click()
+    }
+}
+
+// vibre
+function vibra(n) {
+    navigator.vibrate(n);
+};
+
+
+
+// loader audio a player
 audioPlayer.addEventListener("loadstart", () => {
     showLoader();
 });
@@ -304,7 +314,6 @@ audioPlayer.addEventListener("canplay", () => {
     hideLoader();
 });
 
-// 🔥 هنگام تغییر زمان (seek) لودینگ نمایش داده شود
 audioPlayer.addEventListener("seeking", () => {
     showLoader();
 });
@@ -313,7 +322,6 @@ audioPlayer.addEventListener("seeked", () => {
     hideLoader();
 });
 
-// 🔥 توابع بهینه‌شده برای نمایش و مخفی کردن لودینگ
 function showLoader() {
     loaderPlayer.style.display = "block";
     timePlayer.style.display = "none";
@@ -327,29 +335,15 @@ function hideLoader() {
 
 
 
-function loopPlaye(eleman) {
-    vibra()
-    if (audioPlayer.loop == true) {
-        audioPlayer.loop = false
-        eleman.style.color = "#999999"
-    } else {
-        audioPlayer.loop = true
-        eleman.style.color = "#e5e7eb"
-    }
-}
-
-function movePlaye(n) {
-    vibra()
-    audioPlayer.currentTime += (5 * n)
-}
-
-
+// click a time audio is player
 let isDragging = false;
 const progresParentElement = progresPlayer.closest("mainProgresTime");
 
 function updateProgress(e) {
     if (!isDragging) return;
     e.preventDefault();
+
+    vibra(20)
 
     let rect = progresParentElement.getBoundingClientRect();
     let clickX = (e.clientX || e.touches?.[0]?.clientX) - rect.left;
@@ -358,6 +352,10 @@ function updateProgress(e) {
     if (!isNaN(newTime) && isFinite(newTime)) {
         progresPlayer.style.width = (clickX / rect.width) * 100 + "%";
         audioPlayer.currentTime = newTime;
+    }
+
+    if (audioPlayer.paused) {
+        btnPlayer.click()
     }
 }
 
@@ -379,7 +377,7 @@ document.addEventListener("touchmove", updateProgress);
 document.addEventListener("touchend", stopDrag);
 
 
-
+// click a volume audio is player
 let valueInput
 let isDragging2 = false;
 const progresParentElement2 = progresVolumePlayer.closest("mainProgresVolume");
@@ -391,7 +389,7 @@ function handleDrag2(e) {
     if (!isDragging2) return;
 
     e.preventDefault();
-    vibra2()
+    vibra(20)
     let rect = progresParentElement2.getBoundingClientRect();
     let clickX = (e.clientX || e.touches[0].clientX) - rect.left;
 
@@ -427,11 +425,3 @@ document.addEventListener("mouseup", stopDragging2);
 progresParentElement2.addEventListener("touchstart", startDragging2, { passive: true });
 document.addEventListener("touchmove", handleDrag2);
 document.addEventListener("touchend", stopDragging2);
-
-
-function vibra() {
-    navigator.vibrate(60);
-};
-function vibra2() {
-    navigator.vibrate(5);
-};
