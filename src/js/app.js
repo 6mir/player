@@ -1,8 +1,8 @@
 // "use strict"
 
-// ["contextmenu", "keydown", "selectstart"].forEach((x) => {
-//     window.addEventListener(x, (e) => e.preventDefault())
-// })
+["contextmenu", "keydown", "selectstart"].forEach((x) => {
+    window.addEventListener(x, (e) => e.preventDefault())
+})
 
 const BA = "./music/"
 const BI = "./src/img/"
@@ -57,7 +57,7 @@ dataMusics.forEach((dataMusic) => {
     itemMusic.innerHTML = `
         <div class="flex items-center gap-x-1">
             <div class="size-14 md:size-[5.8rem] p-1">
-                <loaderItemMusic class="animate-pulse size-full rounded-full bg-gray-500"></loaderItemMusic>
+                <loaderItemMusic class="animate-pulse size-full rounded-full block bg-gray-500"></loaderItemMusic>
                 <img src="${dataMusic.img}" alt="${dataMusic.name}" class="size-full rounded-full object-cover" style="display: none;">
             </div>
             <p class="font-BoldFt text-base md:ext-lg">${dataMusic.name}</p>
