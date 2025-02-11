@@ -1,19 +1,22 @@
 // "use strict"
 
-["contextmenu", "keydown", "selectstart"].forEach((x) => {
-    window.addEventListener(x, (e) => e.preventDefault())
-})
+// ["contextmenu", "keydown", "selectstart"].forEach((x) => {
+//     window.addEventListener(x, (e) => e.preventDefault())
+// })
+
+const BA = "./music/"
+const BI = "./src/img/"
 
 let dataMusics = [
-    { id: 1, name: "بیم - یاس", audio: "./music/.mp3", img: "./src/img/" },
-    { id: 2, name: "چرخه - بهرام", audio: "./music/BahramCharkheh.mp3", img: "./src/img/" },
-    { id: 3, name: "افعی - تتلو", audio: "./music/Tataloo-Afee.mp3", img: "./src/img/" },
-    { id: 4, name: "مثلا - اررور", audio: "./music/www.mp3", img: "./src/img/" },
-    { id: 5, name: "نصف شب - تتلو", audio: "./music/TatalooNesfeShab.mp3", img: "./src/img/" },
-    { id: 6, name: "خلاص - شایع", audio: "./music/ShayeKhales.mp3", img: "./src/img/" },
-    { id: 7, name: "حق - تتلو", audio: "./music/TatalooHagh.mp3", img: "./src/img/" },
+    { id: 1, name: "بیم - یاس", audio: `${BA}YasBeem.mp3`, img: `${BI}yas.jpg` },
+    { id: 2, name: "چرخه - بهرام", audio: `${BA}BahramCharkheh.mp3`, img: `${BI}bahram.jpg` },
+    { id: 3, name: "افعی - تتلو", audio: `${BA}Tataloo-Afee.mp3`, img: `${BI}tataloo.jpg` },
+    { id: 4, name: "مثلا - اررور", audio: `${BA}www.mp3`, img: `${BI}` },
+    { id: 5, name: "نصف شب - تتلو", audio: `${BA}TatalooNesfeShab.mp3`, img: `${BI}tataloo.jpg` },
+    { id: 6, name: "خلاص - شایع", audio: `${BA}ShayeKhales.mp3`, img: `${BI}shaye.jpg` },
+    { id: 7, name: "حق - تتلو", audio: `${BA}TatalooHagh.mp3`, img: `${BI}tataloo.jpg` },
 ]
-const imgError = "./src/img/error-img.png"
+const DEFALT_IMG = "./src/img/error-img.png"
 
 
 const player = document.querySelector("player")
@@ -42,23 +45,22 @@ const volumeIconPlayer = selectPlayer("#volumeIcon")
 const boxAll = document.querySelector("boxMusic")
 
 
-
 let isMusicPlay = false
 
 
 let appendItemMusic = document.createDocumentFragment();
-dataMusics.forEach((dataMusic) => {
 
+dataMusics.forEach((dataMusic) => {
     const itemMusic = document.createElement('div')
     itemMusic.setAttribute("data-id", dataMusic.id)
     itemMusic.className = "w-full bg-gray-700 flex items-center justify-between p-1 pl-4 rounded-xl"
     itemMusic.innerHTML = `
         <div class="flex items-center gap-x-1">
-            <div class="size-14 md:size-[5.8rem] p-1.5 rounded-full">
+            <div class="size-14 md:size-[5.8rem] p-1">
                 <loaderItemMusic class="animate-pulse size-full rounded-full bg-gray-500"></loaderItemMusic>
-                <img src="${dataMusic.img}" alt="${dataMusic.name}" class="size-full" style="display: none;">
+                <img src="${dataMusic.img}" alt="${dataMusic.name}" class="size-full rounded-full object-cover" style="display: none;">
             </div>
-            <p class="font-BoldFt text-sm md:ext-base">${dataMusic.name}</p>
+            <p class="font-BoldFt text-base md:ext-lg">${dataMusic.name}</p>
         </div>
         <div class="flex items-center gap-x-1 md:gap-x-2">
             <button class="animateScale playItemBtn size-[1.7rem] md:size-7" data-action="play">
@@ -84,7 +86,7 @@ dataMusics.forEach((dataMusic) => {
 
     imgItem.addEventListener("error", function () {
         loader.style.display = "none";
-        imgItem.src = imgError
+        imgItem.src = DEFALT_IMG
     });
 
     appendItemMusic.appendChild(itemMusic);
@@ -140,58 +142,64 @@ let isNexOrPrev
 function playMusic(getIdMusic) {
     dataMusics.forEach((dataMusic) => {
         if (dataMusic.id == getIdMusic) {
-
-            progresPlayer.style.width = "0";
-            rotateNum = 0
-            audioPlayer.src = dataMusic.audio;
-            namePlayer.innerHTML = dataMusic.name;
+            // اعمال تغییرات UI بلافاصله هنگام کلیک روی پلی
+            targetMusic.querySelector("svg>use").setAttribute("href", "#pauseIcon");
+            btnPlayer.querySelector("svg>use").setAttribute("href", "#pauseIcon");
+            player.style.bottom = "2px";
+            updatePlayButton(getIdMusic);
+            isMusicPlay = true;
             imgPlayer.src = dataMusic.img;
-            downlodPlayer.href = dataMusic.audio
-            downlodPlayer.download = dataMusic.name
-            player.style.bottom = "2px"
+            namePlayer.innerHTML = dataMusic.name;
+            downlodPlayer.href = dataMusic.audio;
+            downlodPlayer.download = dataMusic.name;
+            progresPlayer.style.width = "0";
+            rotateNum = 0;
+            FloaderImgPlayer();
+            rotateImg(false);
+            rotateImg(true);
+            vibra();
 
-            targetMusic.querySelector("svg>use").setAttribute("href", "#pauseIcon")
+            // تنظیم آهنگ جدید
+            audioPlayer.src = dataMusic.audio;
 
-            FloaderImgPlayer()
-            audioPlayer.play()
-                .then(() => {
-                    rotateImg(false)
-                    rotateImg(true)
-                    updatePlayButton(getIdMusic);
-                    btnPlayer.querySelector("svg>use").setAttribute("href", "#pauseIcon")
-                    isMusicPlay = true;
-                    vibra()
-                })
-                .catch(function () {
-                    if (isNexOrPrev == "next") {
-                        nextPlayer()
-                    }
-                    else if (isNexOrPrev == "prev") {
-                        prevPlayer()
-                    }
-                    else {
-                        nextPlayer()
-                    }
+            // زمانی که فایل آماده پخش شد، پخش موسیقی انجام شود
+            audioPlayer.oncanplay = () => {
+                audioPlayer.play();
+            };
 
-                    const divErrorElem = document.createElement("div")
-                    divErrorElem.className = "fixed inset-0 w-40 md:w-52 h-8 md:h-10 flex items-center justify-center bg-gray-700/60 backdrop-blur-lg m-4 rounded-md"
-                    divErrorElem.innerHTML = `
-                        <p class="text-red-400 text-lg md:text-xl">خطا در بارگذاری</p>
-                    `
-                    document.body.appendChild(divErrorElem)
-                    navigator.vibrate([50, 40, 60, 40, 70, 300, 300]);
+            // اگر خطا رخ داد
+            audioPlayer.onerror = () => {
+                // ریست کردن تغییرات اگر خطا رخ داد
+                targetMusic.querySelector("svg>use").setAttribute("href", "#playIcon");
+                btnPlayer.querySelector("svg>use").setAttribute("href", "#playIcon");
+                isMusicPlay = false;
 
-                    setTimeout(() => {
-                        document.body.removeChild(divErrorElem)
-                    }, 2000);
-                });
+                if (isNexOrPrev == "next") {
+                    nextPlayer();
+                } else if (isNexOrPrev == "prev") {
+                    prevPlayer();
+                } else {
+                    nextPlayer();
+                }
+
+                const divErrorElem = document.createElement("div");
+                divErrorElem.className =
+                    "fixed inset-0 w-40 md:w-52 h-8 md:h-10 flex items-center justify-center bg-gray-700/60 backdrop-blur-lg m-4 rounded-md";
+                divErrorElem.innerHTML = `
+                    <p class="text-red-400 text-lg md:text-xl">خطا در بارگذاری</p>
+                `;
+                document.body.appendChild(divErrorElem);
+                navigator.vibrate([50, 40, 60, 40, 70, 300, 300]);
+
+                setTimeout(() => {
+                    document.body.removeChild(divErrorElem);
+                }, 2000);
+            };
         }
     });
-    playItemMusics.forEach(boxAllbtn => {
-        boxAllbtn.querySelector("svg>use").setAttribute("href", "#playIcon")
-        boxAllbtn.setAttribute("data-action", "play")
-    });
 }
+
+
 
 function pauseMusic() {
     vibra()
@@ -201,7 +209,6 @@ function pauseMusic() {
     isMusicPlay = false
     audioPlayer.pause()
     rotateImg(false)
-    audioPlayer.src = ""
 
     playItemMusics.forEach(boxAllbtn => {
         boxAllbtn.querySelector("svg>use").setAttribute("href", "#playIcon")
@@ -218,7 +225,7 @@ function FloaderImgPlayer() {
     })
 
     imgPlayer.addEventListener("error", function () {
-        imgPlayer.src = imgError
+        imgPlayer.src = DEFALT_IMG
         loadImgPlayer.style.display = "none"
     })
 }
@@ -240,11 +247,9 @@ btnPlayer.addEventListener("click", function () {
     }
 })
 function nextPlayer() {
-    if (dataMusics.length <= getIdMusic) {
-        getIdMusic = 0
-    }
-    getIdMusic++
-    playMusic(getIdMusic)
+    getIdMusic = (getIdMusic % dataMusics.length) + 1;
+    playMusic(getIdMusic);
+
     isNexOrPrev = "next";
 }
 function prevPlayer() {
@@ -259,6 +264,7 @@ function prevPlayer() {
 
 let currentMin = 0, currentSec = 0, durationMin = 0, durationSec = 0;
 audioPlayer.addEventListener("timeupdate", function () {
+    if (isNaN(audioPlayer.duration)) return;
 
     durationMin = String(Math.floor(audioPlayer.duration / 60)).padStart(2, "0");
     durationSec = String(Math.floor(audioPlayer.duration % 60)).padStart(2, "0");
@@ -266,10 +272,6 @@ audioPlayer.addEventListener("timeupdate", function () {
     currentSec = String(Math.floor(audioPlayer.currentTime % 60)).padStart(2, "0");
 
     timePlayer.innerHTML = `${durationMin}:${durationSec} / ${currentMin}:${currentSec}`;
-
-    if (durationMin == "NaN" || durationSec == "NaN" || currentMin == "NaN" || currentSec == "NaN") {
-        timePlayer.innerHTML = "00:00 / 00:00";
-    }
 
     progresPlayer.style.width = (audioPlayer.currentTime / audioPlayer.duration) * 100 + "%";
 });
@@ -295,14 +297,35 @@ audioPlayer.addEventListener('ended', () => {
 });
 
 audioPlayer.addEventListener("loadstart", () => {
-    loaderPlayer.style.display = "block";
-    timePlayer.style.display = "none";
+    showLoader();
 });
 
 audioPlayer.addEventListener("canplay", () => {
+    hideLoader();
+});
+
+// 🔥 هنگام تغییر زمان (seek) لودینگ نمایش داده شود
+audioPlayer.addEventListener("seeking", () => {
+    showLoader();
+});
+
+audioPlayer.addEventListener("seeked", () => {
+    hideLoader();
+});
+
+// 🔥 توابع بهینه‌شده برای نمایش و مخفی کردن لودینگ
+function showLoader() {
+    loaderPlayer.style.display = "block";
+    timePlayer.style.display = "none";
+}
+
+function hideLoader() {
     loaderPlayer.style.display = "none";
     timePlayer.style.display = "block";
-});
+}
+
+
+
 
 function loopPlaye(eleman) {
     vibra()
@@ -324,31 +347,37 @@ function movePlaye(n) {
 let isDragging = false;
 const progresParentElement = progresPlayer.closest("mainProgresTime");
 
-function handleDrag(e) {
+function updateProgress(e) {
     if (!isDragging) return;
-    vibra2()
     e.preventDefault();
+
     let rect = progresParentElement.getBoundingClientRect();
-    let clickX = (e.clientX || e.touches[0].clientX) - rect.left;
-    audioPlayer.currentTime = (clickX / rect.width) * audioPlayer.duration;
+    let clickX = (e.clientX || e.touches?.[0]?.clientX) - rect.left;
+    let newTime = (clickX / rect.width) * audioPlayer.duration;
+
+    if (!isNaN(newTime) && isFinite(newTime)) {
+        progresPlayer.style.width = (clickX / rect.width) * 100 + "%";
+        audioPlayer.currentTime = newTime;
+    }
 }
 
-function startDragging(e) {
+function startDrag(e) {
     isDragging = true;
-    handleDrag(e);
+    updateProgress(e);
 }
 
-function stopDragging() {
+function stopDrag() {
     isDragging = false;
 }
 
-progresParentElement.addEventListener("mousedown", startDragging);
-document.addEventListener("mousemove", handleDrag);
-document.addEventListener("mouseup", stopDragging);
+progresParentElement.addEventListener("mousedown", startDrag);
+document.addEventListener("mousemove", updateProgress);
+document.addEventListener("mouseup", stopDrag);
 
-progresParentElement.addEventListener("touchstart", startDragging, { passive: true });
-document.addEventListener("touchmove", handleDrag);
-document.addEventListener("touchend", stopDragging);
+progresParentElement.addEventListener("touchstart", startDrag, { passive: true });
+document.addEventListener("touchmove", updateProgress);
+document.addEventListener("touchend", stopDrag);
+
 
 
 let valueInput
@@ -367,6 +396,7 @@ function handleDrag2(e) {
     let clickX = (e.clientX || e.touches[0].clientX) - rect.left;
 
     valueInput = (clickX / rect.width).toFixed(1);
+    valueInput = Math.max(0, Math.min(1, valueInput));
 
     if (valueInput <= 1 && valueInput >= 0) {
         audioPlayer.volume = valueInput
