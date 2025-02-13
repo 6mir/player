@@ -1,6 +1,6 @@
-["contextmenu", "keydown", "selectstart"].forEach((x) => {
-    window.addEventListener(x, (e) => e.preventDefault())
-})
+// ["contextmenu", "keydown", "selectstart"].forEach((x) => {
+//     window.addEventListener(x, (e) => e.preventDefault())
+// })
 
 // path data
 const BA = "./music/"
@@ -36,6 +36,7 @@ const timePlayer = selectPlayer("time")
 const progresPlayer = selectPlayer("progresTime")
 const progresVolumePlayer = selectPlayer("progresVolume")
 const volumeIconPlayer = selectPlayer("#volumeIcon")
+const loopPlayer = selectPlayer("#loop")
 
 // box music items
 const boxAll = document.querySelector("boxMusic")
@@ -121,6 +122,8 @@ let isNexOrPrev
 function playMusic(getIdMusic) {
     dataMusics.forEach((dataMusic) => {
         if (dataMusic.id == getIdMusic) {
+
+            timePlayer.innerHTML = `00:00 / 00:00`;
             targetMusic.querySelector("svg>use").setAttribute("href", "#pauseIcon");
             btnPlayer.querySelector("svg>use").setAttribute("href", "#pauseIcon");
             player.style.bottom = "2px";
@@ -278,16 +281,16 @@ audioPlayer.addEventListener('ended', () => {
 });
 
 // lopp audio
-function loopPlaye(eleman) {
+loopPlayer.addEventListener("click", function () {
     vibre(50)
     if (audioPlayer.loop == true) {
         audioPlayer.loop = false
-        eleman.style.color = "#999999"
+        loopPlayer.style.color = "#999999"
     } else {
         audioPlayer.loop = true
-        eleman.style.color = "#e5e7eb"
+        loopPlayer.style.color = "#e5e7eb"
     }
-}
+})
 
 // move audio
 function movePlaye(n) {
